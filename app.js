@@ -1,8 +1,23 @@
 // Backend/app.js
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
-const dotenv = require('dotenv');
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://quillquest.vercel.app',  // Your frontend production URL
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Load environment variables
 dotenv.config();
